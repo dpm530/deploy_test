@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <title>Home Page</title>
+   </head>
+   <body>
+      <h1>Welcome, {{user.name}}!</h1>
+      <a href='/'>Logout</a><br>
+      <a href='/createWishListPage'>Add Item</a>
+      <br>
+      <h1>Your Wish List:</h1>
+      <table>
+         <thead>
+            <th>Item</th>
+            <th>Added By</th>
+            <th>Date Added</th>
+            <th>Action</th>
+         </thead>
+         {% for wish in wishlists %}
+            <tbody>
+               <tr>
+                  <td><a href='/listItem/{{wish.id}}'>{{wish.item}}</a></td>
+                  <td>{{wish.user.name}}</td>
+                  <td>{{wish.created_at}}</td>
+                  <td>
+                     {% if user.id == wish.user.id %}
+                        <form action='/deleteItem/{{wish.id}}' method='post'>
+                        {% csrf_token %}
+                        <input type='submit' value='Delete'>
+                        </form>
+                     {% endif %}
+                  </td>
+               </tr>
+            </tbody>
+         {% endfor %}
+      </table><br>
+      <h1>Other User's Wish List:</h1>
+      <table>
+         <thead>
+            <th>Item</th>
+            <th>Added By</th>
+            <th>Date Added</th>
+            <th>Action</th>
+         </thead>
+         {% for other in other_items %}
+            <tbody>
+               <tr>
+                  <td><a href='/listItem/{{other.id}}'>{{other.item}}</a></td>
+                  <td>{{other.user.name}}</td>
+                  <td>{{other.created_at}}</td>
+                  <td>
+                     <form action='' method='post'>
+                     {% csrf_token %}
+                     <input type='submit' value='Add Item'>
+                     </form>
+                  </td>
+               </tr>
+            </tbody><br>
+         {% endfor %}
+      </table>
+   </body>
+</html>
